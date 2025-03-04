@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 import {
@@ -12,10 +12,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import TodoInput from "@/components/todo-input";
+import { X } from "lucide-react";
 
 export default function Home() {
   const todos = useQuery(api.todos.get);
+  const deleteTodo = useMutation(api.todos.deleteTodo);
   console.log({ todos });
+
+  const handleOnClick = (id: string) => {
+    deleteTodo({ id });
+  };
 
   return (
     // <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -123,9 +129,13 @@ export default function Home() {
           // </div>
 
           <Card key={todo._id}>
-            <CardHeader>
-              <CardTitle>{todo.content} </CardTitle>
+            <CardHeader className="flex flex-row">
+              <CardTitle>{todo.content}</CardTitle>
               {/* <CardDescription>Card Description</CardDescription> */}
+              <X
+                onClick={() => handleOnClick(todo._id)}
+                className="text-red-500 hover:cursor-pointer hover:bg-red-500 hover:text-black transition"
+              />
             </CardHeader>
             {/* <CardContent>
               <p>Card Content</p>

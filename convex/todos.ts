@@ -29,3 +29,11 @@ export const get = query({
     return ctx.db.query("todos").collect();
   },
 });
+
+export const deleteTodo = mutation({
+  args: { id: v.id("todos") },
+  handler(ctx, args) {
+    args.id;
+    return ctx.db.delete(args.id);
+  },
+});
